@@ -25,7 +25,7 @@ try
     {
         RecurseSubdirectories = true,
         AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
-        MaxRecursionDepth = 100
+        MaxRecursionDepth = 100 // Можно сделать настраиваемым параметром если софт пользовательский (думаю для тестового задания хватит хардкода)
     };
 
     // Получаем список файлов
@@ -33,10 +33,8 @@ try
         .EnumerateFiles("*.*",  enumerationOptions)
         .Where(file => file.Length > 0 )
         .OrderByDescending(file => file.Length)
-        .Select(file => new FileInfo(file.FullName))
-        .First();       
+        .First();
 
-    
     string formattedSize = FormatFileSize(largestFile.Length);
     SuccessMessage($"Имя файла: {largestFile.Name}");
     SuccessMessage($"Размер файла: {formattedSize}");
