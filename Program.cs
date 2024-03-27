@@ -1,5 +1,6 @@
 ﻿using static SearchForTheLargestFile_Test.MessageService.MessageService;
 using static SearchForTheLargestFile_Test.Helpers.FileHelpers;
+using System.Linq;
 
 InfoMessage("Приложение для поиска самого большого файла в указанной директории");
 InfoMessage("Укажите директорию");
@@ -19,13 +20,13 @@ try
 
     // Получаем корневую директорию диска
     string rootDirectory = selectedDrive.RootDirectory.FullName;
+    FileInfo largestFile = FindLargestFile(rootDirectory);
    
-    // Получаем самый большой файл
-    FileInfo largestFile = new DirectoryInfo(rootDirectory)
-        .EnumerateFiles("*.*")
-        .Where(file => file.Length > 0 )
-        .OrderByDescending(file => file.Length)
-        .First();
+    if(largestFile is null)
+    {
+        ErrorMessage("Файл не найден");
+        return;
+    }
 
     string formattedSize = FormatFileSize(largestFile.Length);
     SuccessMessage($"Имя файла: {largestFile.Name}");

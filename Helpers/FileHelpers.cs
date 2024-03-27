@@ -24,5 +24,40 @@
 
             return $"{size:0.##} {suffixes[suffixIndex]}";
         }
+
+        public static FileInfo FindLargestFile(string directory)
+        {
+            DirectoryInfo dirInfo = new(directory);
+            FileInfo? largestFile = null;
+
+            try
+            {
+                largestFile = GetLargestFile(dirInfo.GetFiles());
+                Console.WriteLine($"Пройденная директория: {directory}");
+
+                var subDirectories = dirInfo.GetDirectories();
+                if (subDirectories.Length != 0)
+                {
+                    largestFile = subDirectories                        
+                        .Select(subDir => FindLargestFile(subDir.FullName))
+                        .Concat(new[] { largestFile })
+                        .OrderByDescending(file => file?.Length ?? 0)
+                        .FirstOrDefault();
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Пропускаем директорию, если у нас нет доступа к ней
+            }
+
+            return largestFile;
+        }
+
+
+        static FileInfo GetLargestFile(FileInfo[] files)
+        {
+            return files.OrderByDescending(f => f.Length).FirstOrDefault();
+        }
+
     }
 }
