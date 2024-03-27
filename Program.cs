@@ -1,6 +1,5 @@
-﻿using static SearchForTheLargestFile_Test.MessageService.MessageService;
-using static SearchForTheLargestFile_Test.Helpers.FileHelpers;
-using System.Linq;
+﻿using static SearchForTheLargestFile_Test.Helpers.FileHelpers;
+using static SearchForTheLargestFile_Test.MessageService.MessageService;
 
 InfoMessage("Приложение для поиска самого большого файла в указанной директории");
 InfoMessage("Укажите директорию");
@@ -21,8 +20,8 @@ try
     // Получаем корневую директорию диска
     string rootDirectory = selectedDrive.RootDirectory.FullName;
     FileInfo largestFile = FindLargestFile(rootDirectory);
-   
-    if(largestFile is null)
+
+    if (largestFile is null)
     {
         ErrorMessage("Файл не найден");
         return;
@@ -42,7 +41,7 @@ catch (InvalidOperationException ex)
 }
 catch (Exception ex)
 {
-    ErrorMessage($"Произошла ошибка: {ex.Message}");  
+    ErrorMessage($"Произошла ошибка: {ex.Message}");
 }
 
 Console.ReadKey();

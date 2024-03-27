@@ -25,8 +25,15 @@
             return $"{size:0.##} {suffixes[suffixIndex]}";
         }
 
+        /// <summary>
+        /// Поиск самого большого файла в директории
+        /// </summary>
+        /// <param name="directory">Путь к директории</param>
+        /// <returns> Найденный самый больший файл</returns>
         public static FileInfo FindLargestFile(string directory)
         {
+            if (string.IsNullOrWhiteSpace(directory)) return null!;
+
             DirectoryInfo dirInfo = new(directory);
             FileInfo? largestFile = null;
 
@@ -56,6 +63,7 @@
 
         static FileInfo GetLargestFile(FileInfo[] files)
         {
+            if (files.Length == 0) return null!;
             return files.OrderByDescending(f => f.Length).FirstOrDefault();
         }
 
