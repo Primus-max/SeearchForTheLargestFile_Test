@@ -1,4 +1,4 @@
-﻿namespace SeearchForTheLargestFile_Test.Helpers
+﻿namespace SearchForTheLargestFile_Test.Helpers
 {
     public class FileHelpers
     {
@@ -9,6 +9,8 @@
         /// <returns>Строка для отображения</returns>
         public static string FormatFileSize(long bytes)
         {
+            if (bytes == 0) return "0";
+
             string[] suffixes = ["B", "KB", "MB", "GB", "TB"];
 
             int suffixIndex = 0;

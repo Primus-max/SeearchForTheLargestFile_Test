@@ -1,5 +1,5 @@
-﻿using static SeearchForTheLargestFile_Test.MessageService.MessageService;
-using static SeearchForTheLargestFile_Test.Helpers.FileHelpers;
+﻿using static SearchForTheLargestFile_Test.MessageService.MessageService;
+using static SearchForTheLargestFile_Test.Helpers.FileHelpers;
 
 InfoMessage("Приложение для поиска самого большого файла в указанной директории");
 InfoMessage("Укажите директорию");
@@ -10,7 +10,7 @@ try
 {
     // Проверка на пустую строку или несуществующую директорию
     if (string.IsNullOrWhiteSpace(disk) || !Directory.Exists(disk))
-        throw new ArgumentException("Указанной директории не существует. Проверьте правильность написания и попробуйте ещё раз");
+        throw new ArgumentException("Указанной директории не существует");
 
     // Получаем информацию о диске
     DriveInfo[] drives = DriveInfo.GetDrives();
@@ -19,18 +19,10 @@ try
 
     // Получаем корневую директорию диска
     string rootDirectory = selectedDrive.RootDirectory.FullName;
-
-    // Настройка параметров перебора файла
-    EnumerationOptions enumerationOptions = new()
-    {
-        RecurseSubdirectories = true,
-        AttributesToSkip = FileAttributes.Hidden | FileAttributes.System,
-        MaxRecursionDepth = 100 // Можно сделать настраиваемым параметром если софт пользовательский (думаю для тестового задания хватит хардкода)
-    };
-
-    // Получаем список файлов
+   
+    // Получаем самый большой файл
     FileInfo largestFile = new DirectoryInfo(rootDirectory)
-        .EnumerateFiles("*.*",  enumerationOptions)
+        .EnumerateFiles("*.*")
         .Where(file => file.Length > 0 )
         .OrderByDescending(file => file.Length)
         .First();
